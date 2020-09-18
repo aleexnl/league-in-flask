@@ -27,7 +27,8 @@ def create_league():
         league_dic[local_team] = {}
         ranking_dic[local_team] = 0
         for visitant_team in teams:
-            league_dic[local_team][visitant_team] = None
+            if visitant_team != local_team:
+                league_dic[local_team][visitant_team] = None
     return league_dic, ranking_dic
 
 
@@ -64,15 +65,17 @@ def index():
 
 
 @app.route('/goals')
-def select_teams():
+def select_teams(error=False):
     html = "<h1>Local Team</h1>"
     html += """<form method="post">"""
     html += create_html_team_select("local")
     html += "<h1>Visitant Team</h1>"
     html += create_html_team_select("visitant")
-    html += """</br>"""
+    html += "</br >"
     html += """<input type="submit">"""
-    html += """</form>"""
+    html += "</form >"
+    if error:
+        html += """<h1 style="color:red;">Error: Select different teams</h1>"""
     return top_menu_html + html
 
 
@@ -80,8 +83,12 @@ def select_teams():
 def select_teams_post():
     local_team = request.form["local"]
     visitant_team = request.form["visitant"]
-    html = create_html_set_goals(local_team, visitant_team)
-    return html
+    if local_team == visitant_team:
+        return select_teams(True)
+    else:
+        html = create_html_set_goals(local_team, visitant_team)
+        html += """<a href="/goals">Return</a>"""
+        return html
 
 
 @app.route('/league')
