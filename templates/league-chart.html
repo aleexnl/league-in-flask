@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>League Chart</title>
+        <link
+            rel="shortcut icon"
+            href="{{ url_for('static', filename='favicon.png') }}"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='bootstrap.min.css') }}"
+        />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="/">League App</a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link active" href="/league">League</a>
+                    <a class="nav-link" href="/teams">Teams</a>
+                    <a class="nav-link" href="/goals">Goals</a>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <h1 class="mt-4 mb-4">League Goals Chart</h1>
+            <div class="table-responsive">
+                <table class="table table-striped table-borderless">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col"></th>
+                            {% for team in teams %}
+                            <th class="text-center" scope="col">{{team}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for local in teams %}
+                        <tr>
+                            <th class="bg-dark text-light" scope="row">
+                                {{local}}
+                            </th>
+                            {% for visitant in league[local] %}
+                            <td class="text-center">
+                                {{league[local][visitant]}}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"
+        ></script>
+        <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    </body>
+</html>
