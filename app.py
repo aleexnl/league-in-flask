@@ -1,14 +1,5 @@
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, render_template
 app = Flask(__name__)
-
-top_menu_html = """
-<nav>
-<a href="/">Home</a>
-<a href="/goals">Goals</a>
-<a href="/league">League</a>
-<a href="/teams">Teams</a>
-</nav>
-"""
 
 
 def load_teams():
@@ -68,7 +59,7 @@ def create_html_set_goals(local, visitant):
     <input type="submit"/>
     </form>
     """.format(local, visitant)
-    return top_menu_html + html
+    return html
 
 
 teams = load_teams()
@@ -77,7 +68,7 @@ league, ranking = create_league()
 
 @app.route('/')
 def index():
-    return top_menu_html
+    return render_template("index.html")
 
 
 @app.route('/goals')
@@ -92,7 +83,7 @@ def select_teams(error=False):
             </form >"""
     if error:
         html += """<h1 style="color:red;">Error: Select different teams</h1>"""
-    return top_menu_html + html
+    return html
 
 
 @app.route('/goals', methods=["POST"])
@@ -121,7 +112,7 @@ def set_goals_post(local, visitant):
 
 @ app.route('/league')
 def view_league():
-    return top_menu_html + """
+    return """
     <h1>league Chart</h1>
     <p>{}</p>
     <a href="/">Return</a>
@@ -130,7 +121,7 @@ def view_league():
 
 @ app.route('/teams')
 def team_list():
-    return top_menu_html + """
+    return """
     <h1>Team List</h1>
     <p>{}</p>
     <a href="/">Return</a>
