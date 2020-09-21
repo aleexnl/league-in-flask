@@ -26,7 +26,7 @@ def create_league():
     return league_dic, ranking_dic
 
 
-def update_league(local_goals, visitant_goals, local_team, visitant_team):
+def update_league(local_team, visitant_team, local_goals, visitant_goals):
     league[local_team][visitant_team] = local_goals
     league[visitant_team][local_team] = visitant_goals
 
@@ -36,12 +36,12 @@ league, ranking = create_league()
 
 
 @app.route('/')
-def index():
+def home():
     return render_template("index.html")
 
 
 @ app.route('/league')
-def view_league():
+def league_grid():
     return render_template("league-chart.html", league=league, teams=teams)
 
 
@@ -51,18 +51,21 @@ def team_list():
 
 
 @app.route('/goals')
-def select_teams(error=False):
-    return render_template("select-teams-goals.html", teams=teams)
+def goals_input(error=None):
+    return render_template("select-teams-goals.html", teams=teams, error=error)
 
 
 @app.route('/goals', methods=["POST"])
-def select_teams_post():
-    local_team = request.form["local"]
-    visitant_team = request.form["visitant"]
+def goals_input_post():
+    local_team = request.form["localTeam"]
+    visitant_team = request.form["visitantTeam"]
+    local_goals = request.form["localTeamScore"]
+    visitant_goals = request.form["visitantTeamScore"]
     if local_team == visitant_team:
-        return select_teams(True)
+        return goals_input("sameTeams")
     else:
-        return redirect(url_for('set_goals', local=local_team, visitant=visitant_team))
+        update_league(local_team, visitant_team, local_goals, visitant_goals)
+        return redirect(url_for("league_grid"))
 
 
 @ app.route('/set_goals<local>vs<visitant>')
