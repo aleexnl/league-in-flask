@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, redirect, url_for
 app = Flask(__name__)
 
 top_menu_html = """
@@ -32,6 +32,11 @@ def create_league():
     return league_dic, ranking_dic
 
 
+def update_league(local_goals, visitant_goals, local_team, visitant_team):
+    league[local_team][visitant_team] = local_goals
+    league[visitant_team][local_team] = visitant_goals
+
+
 def create_html_team_options():
     html = ""
     for team in teams:
@@ -52,7 +57,18 @@ def create_html_team_select(team_type):
 
 def create_html_set_goals(local, visitant):
     html = "<h1>{} vs {}</h1>".format(local, visitant)
-    return html
+    html += """
+    <form method="post">
+    <label>{} Goals: </label>
+    <input name="local" type="number" value=0 required/>
+    <br>
+    <label>{} Goals: </label>
+    <input name="visitant" type="number" value=0 required/>
+    </br>
+    <input type="submit"/>
+    </form>
+    """.format(local, visitant)
+    return top_menu_html + html
 
 
 teams = load_teams()
@@ -66,14 +82,14 @@ def index():
 
 @app.route('/goals')
 def select_teams(error=False):
-    html = "<h1>Local Team</h1>"
-    html += """<form method="post">"""
+    html = """<h1>Local Team</h1>
+    <form method="post">"""
     html += create_html_team_select("local")
     html += "<h1>Visitant Team</h1>"
     html += create_html_team_select("visitant")
-    html += "</br >"
-    html += """<input type="submit">"""
-    html += "</form >"
+    html += """</br >
+            <input type="submit">
+            </form >"""
     if error:
         html += """<h1 style="color:red;">Error: Select different teams</h1>"""
     return top_menu_html + html
@@ -86,12 +102,24 @@ def select_teams_post():
     if local_team == visitant_team:
         return select_teams(True)
     else:
-        html = create_html_set_goals(local_team, visitant_team)
-        html += """<a href="/goals">Return</a>"""
-        return html
+        return redirect(url_for('set_goals', local=local_team, visitant=visitant_team))
 
 
-@app.route('/league')
+@ app.route('/set_goals<local>vs<visitant>')
+def set_goals(local, visitant):
+    html = create_html_set_goals(local, visitant)
+    html += """<a href="/goals">Return</a>"""
+    return html
+
+
+@ app.route('/set_goals<local>vs<visitant>', methods=["POST"])
+def set_goals_post(local, visitant):
+    update_league(request.form["local"],
+                  request.form["visitant"], local, visitant)
+    return "Hello World!"
+
+
+@ app.route('/league')
 def view_league():
     return top_menu_html + """
     <h1>league Chart</h1>
@@ -100,7 +128,7 @@ def view_league():
     """.format(league)
 
 
-@app.route('/teams')
+@ app.route('/teams')
 def team_list():
     return top_menu_html + """
     <h1>Team List</h1>
