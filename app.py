@@ -3,6 +3,7 @@ app = Flask(__name__)
 
 
 def load_teams():
+    """Load teams and append to list from file."""
     team_list = []
     file = open("teams.cfg", "r")
     for team in file:
@@ -11,14 +12,16 @@ def load_teams():
 
 
 def create_league():
-    """ Creates the league matrix. """
+    """ Creates the league matrix."""
     league_dic = {}
     ranking_dic = {}
     for local_team in teams:
         league_dic[local_team] = {}
         ranking_dic[local_team] = 0
         for visitant_team in teams:
-            if visitant_team != local_team:
+            if visitant_team == local_team:
+                league_dic[local_team][visitant_team] = "X"
+            else:
                 league_dic[local_team][visitant_team] = None
     return league_dic, ranking_dic
 
@@ -71,6 +74,16 @@ def index():
     return render_template("index.html")
 
 
+@ app.route('/league')
+def view_league():
+    return render_template("league-chart.html", league=league, teams=teams)
+
+
+@ app.route('/teams')
+def team_list():
+    return render_template("team-list.html", teams=teams)
+
+
 @app.route('/goals')
 def select_teams(error=False):
     html = """<h1>Local Team</h1>
@@ -83,7 +96,7 @@ def select_teams(error=False):
             </form >"""
     if error:
         html += """<h1 style="color:red;">Error: Select different teams</h1>"""
-    return html
+    return render_template("select-teams-goals.html", teams=teams)
 
 
 @app.route('/goals', methods=["POST"])
@@ -108,24 +121,6 @@ def set_goals_post(local, visitant):
     update_league(request.form["local"],
                   request.form["visitant"], local, visitant)
     return "Hello World!"
-
-
-@ app.route('/league')
-def view_league():
-    return """
-    <h1>league Chart</h1>
-    <p>{}</p>
-    <a href="/">Return</a>
-    """.format(league)
-
-
-@ app.route('/teams')
-def team_list():
-    return """
-    <h1>Team List</h1>
-    <p>{}</p>
-    <a href="/">Return</a>
-    """.format(", ".join(teams))
 
 
 if __name__ == '__main__':
