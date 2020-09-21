@@ -27,6 +27,7 @@ def create_league():
 
 
 def update_league(local_team, visitant_team, local_goals, visitant_goals):
+    """Update goals on the league matrix."""
     league[local_team][visitant_team] = local_goals
     league[visitant_team][local_team] = visitant_goals
 
@@ -66,20 +67,6 @@ def goals_input_post():
     else:
         update_league(local_team, visitant_team, local_goals, visitant_goals)
         return redirect(url_for("league_grid"))
-
-
-@ app.route('/set_goals<local>vs<visitant>')
-def set_goals(local, visitant):
-    html = create_html_set_goals(local, visitant)
-    html += """<a href="/goals">Return</a>"""
-    return html
-
-
-@ app.route('/set_goals<local>vs<visitant>', methods=["POST"])
-def set_goals_post(local, visitant):
-    update_league(request.form["local"],
-                  request.form["visitant"], local, visitant)
-    return "Hello World!"
 
 
 if __name__ == '__main__':
