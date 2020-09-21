@@ -22,7 +22,7 @@ def create_league():
             if visitant_team == local_team:
                 league_dic[local_team][visitant_team] = "X"
             else:
-                league_dic[local_team][visitant_team] = None
+                league_dic[local_team][visitant_team] = ""
     return league_dic, ranking_dic
 
 
@@ -54,6 +54,11 @@ def team_list():
 @app.route('/goals')
 def goals_input(error=None):
     return render_template("select-teams-goals.html", teams=teams, error=error)
+
+
+@app.route('/ranking')
+def ranking_chart(error=None):
+    return render_template("ranking.html", ranking=ranking)
 
 
 @app.route('/goals', methods=["POST"])
