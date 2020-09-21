@@ -31,40 +31,6 @@ def update_league(local_goals, visitant_goals, local_team, visitant_team):
     league[visitant_team][local_team] = visitant_goals
 
 
-def create_html_team_options():
-    html = ""
-    for team in teams:
-        tag = "<option value=\"{}\">".format(team)
-        tag += team
-        tag += "</option>"
-        html += tag
-    return html
-
-
-def create_html_team_select(team_type):
-    team_list = create_html_team_options()
-    html = "<select name={}>".format(team_type)
-    html += team_list
-    html += "</select>"
-    return html
-
-
-def create_html_set_goals(local, visitant):
-    html = "<h1>{} vs {}</h1>".format(local, visitant)
-    html += """
-    <form method="post">
-    <label>{} Goals: </label>
-    <input name="local" type="number" value=0 required/>
-    <br>
-    <label>{} Goals: </label>
-    <input name="visitant" type="number" value=0 required/>
-    </br>
-    <input type="submit"/>
-    </form>
-    """.format(local, visitant)
-    return html
-
-
 teams = load_teams()
 league, ranking = create_league()
 
@@ -86,16 +52,6 @@ def team_list():
 
 @app.route('/goals')
 def select_teams(error=False):
-    html = """<h1>Local Team</h1>
-    <form method="post">"""
-    html += create_html_team_select("local")
-    html += "<h1>Visitant Team</h1>"
-    html += create_html_team_select("visitant")
-    html += """</br >
-            <input type="submit">
-            </form >"""
-    if error:
-        html += """<h1 style="color:red;">Error: Select different teams</h1>"""
     return render_template("select-teams-goals.html", teams=teams)
 
 
