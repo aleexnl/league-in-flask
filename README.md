@@ -1,4 +1,4 @@
-<h1><img src="static/favicon.png" alt="Flask logo" width="30"/> Football league in Flask</h1>
+<h1><img src="static/img/favicon.png" alt="Flask logo" width="30"/> Football league in Flask</h1>
 
 > A simple football league system built in Flask, allowing users to input goals and calculate the score in the ranking.
 
