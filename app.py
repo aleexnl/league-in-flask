@@ -85,7 +85,7 @@ ranking = create_ranking()
 
 @app.route('/')
 def home():
-    return render_template("index.html")
+    return render_template("base.html")
 
 
 @ app.route('/league')
