@@ -17,8 +17,8 @@ $ git clone https://github.com/aleexnl/league-in-flask.git
 > Python venv will allow you to isolate packages from this app.
 
 ```bash
-$ python -m venv .venv
-$ . .venv/bin/activate
+$ python3 -m venv venv
+$ . venv/bin/activate
 ```
 
 > For more information go to https://gist.github.com/aleexnl/80c0bfec48b57c8341360f7239d00c77
@@ -32,7 +32,6 @@ $ pip install -r requirements.txt
 -   To start the flask app:
 
 ```bash
-$ export FLASK_APP=app.py
 $ flask run
 ```
 
