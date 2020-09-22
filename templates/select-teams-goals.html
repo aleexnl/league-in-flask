@@ -1,127 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Set Goals</title>
-        <link
-            rel="shortcut icon"
-            href="{{ url_for('static', filename='favicon.png') }}"
-        />
-        <link
-            rel="stylesheet"
-            href="{{ url_for('static', filename='bootstrap.min.css') }}"
-        />
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="/">League App</a>
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link" href="/">Home</a>
-                    <a class="nav-link" href="/league">League</a>
-                    <a class="nav-link" href="/teams">Teams</a>
-                    <a class="nav-link active" href="/goals">Goals</a>
-                    <a class="nav-link" href="/ranking">Ranking</a>
+{% extends "base.html" %} {% block title %}Goals{% endblock %} {% block main %}
+
+<div class="container-fluid">
+    <h1 class="mt-4 mb-4">Set Goals</h1>
+
+    {% if error == "sameTeams" %}
+    <div class="alert alert-danger" role="alert">
+        Please, select different teams.
+    </div>
+    {% endif %}
+    <form method="POST">
+        <div class="card">
+            <h5 class="card-header">Local Team</h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="localTeamSelector">Local Team</label>
+                    <select
+                        class="form-control"
+                        name="localTeam"
+                        id="localTeamSelector"
+                    >
+                        {% for team in teams %}
+                        <option value="{{team}}">{{team}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="localTeamScoreInput"> Local Team Score</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="localTeamScore"
+                        id="localTeamScoreInput"
+                        aria-describedby="helpId"
+                        required
+                        placeholder="0"
+                    />
                 </div>
             </div>
-        </nav>
-
-        <div class="container-fluid">
-            <h1 class="mt-4 mb-4">Set Goals</h1>
-
-            {% if error == "sameTeams" %}
-            <div class="alert alert-danger" role="alert">
-                Please, select different teams.
-            </div>
-            {% endif %}
-            <form method="POST">
-                <div class="card">
-                    <h5 class="card-header">Local Team</h5>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="localTeamSelector">Local Team</label>
-                            <select
-                                class="form-control"
-                                name="localTeam"
-                                id="localTeamSelector"
-                            >
-                                {% for team in teams %}
-                                <option value="{{team}}">{{team}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="localTeamScoreInput">
-                                Local Team Score</label
-                            >
-                            <input
-                                type="number"
-                                class="form-control"
-                                name="localTeamScore"
-                                id="localTeamScoreInput"
-                                aria-describedby="helpId"
-                                required
-                                placeholder="0"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <div class="card">
-                    <h5 class="card-header">Visitant Team</h5>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="visitantTeamSelector"
-                                >Visitant Team</label
-                            >
-                            <select
-                                class="form-control"
-                                name="visitantTeam"
-                                id="visitantTeamSelector"
-                            >
-                                {% for team in teams %}
-                                <option value="{{team}}">{{team}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="visitantTeamScoreInput">
-                                Visitant Team Score</label
-                            >
-                            <input
-                                type="number"
-                                class="form-control"
-                                name="visitantTeamScore"
-                                id="visitantTeamScoreInput"
-                                aria-describedby="helpId"
-                                required
-                                placeholder="0"
-                            />
-                        </div>
-                    </div>
-                </div>
-                <br />
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
         </div>
+        <br />
+        <div class="card">
+            <h5 class="card-header">Visitant Team</h5>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="visitantTeamSelector">Visitant Team</label>
+                    <select
+                        class="form-control"
+                        name="visitantTeam"
+                        id="visitantTeamSelector"
+                    >
+                        {% for team in teams %}
+                        <option value="{{team}}">{{team}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="visitantTeamScoreInput">
+                        Visitant Team Score</label
+                    >
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="visitantTeamScore"
+                        id="visitantTeamScoreInput"
+                        aria-describedby="helpId"
+                        required
+                        placeholder="0"
+                    />
+                </div>
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
-    </body>
-</html>
+{% endblock %}
