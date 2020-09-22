@@ -18,7 +18,7 @@ $ git clone https://github.com/aleexnl/league-in-flask.git
 
 ```bash
 $ python3 -m venv venv
-$ . venv/bin/activate
+$ source venv/bin/activate
 ```
 
 > For more information go to [this gist](https://gist.github.com/aleexnl/80c0bfec48b57c8341360f7239d00c77)
