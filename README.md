@@ -21,7 +21,7 @@ $ python3 -m venv venv
 $ . venv/bin/activate
 ```
 
-> For more information go to https://gist.github.com/aleexnl/80c0bfec48b57c8341360f7239d00c77
+> For more information go to [this gist](https://gist.github.com/aleexnl/80c0bfec48b57c8341360f7239d00c77)
 
 -   Install the package requeriments with pip.
 
