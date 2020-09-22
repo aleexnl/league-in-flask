@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}League Chart{% endblock %} {% block
+{% extends "base.html" %} {% block title %}League chart{% endblock %} {% block
 main %}
 
 <div class="container-fluid">
@@ -17,9 +17,12 @@ main %}
                 {% for local in teams %}
                 <tr>
                     <th class="bg-dark text-light" scope="row">{{local}}</th>
-                    {% for visitant in league[local] %}
+                    {% for visitant in league[local] %} 
+                    {% if league[local][visitant] == "X" %}
+                    <td class="bg-dark"></td>
+                    {% else %}
                     <td class="text-center">{{league[local][visitant]}}</td>
-                    {% endfor %}
+                    {% endif %} {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>

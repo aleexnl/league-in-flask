@@ -20,7 +20,7 @@ def create_league():
             if visitant_team == local_team:
                 league_dic[local_team][visitant_team] = "X"
             else:
-                league_dic[local_team][visitant_team] = None
+                league_dic[local_team][visitant_team] = ""
     return league_dic
 
 
@@ -45,7 +45,7 @@ def update_ranking():
     done_teams = []
     for local_team in league:
         for visitant_team in league[local_team]:
-            if league[local_team][visitant_team] is not None:
+            if league[local_team][visitant_team] != "":
                 if local_team and visitant_team not in done_teams and local_team != visitant_team:
                     points = check_ranking_points(
                         league[local_team][visitant_team], league[visitant_team][local_team])
@@ -55,7 +55,7 @@ def update_ranking():
 
 def check_ranking_points(local, visitant):
     """Check how many points did the local team win."""
-    if local != None:
+    if local != "":
         if local > visitant:
             return 3
         elif local == visitant:
